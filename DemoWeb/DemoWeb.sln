@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoWeb", "DemoWeb\DemoWeb.csproj", "{8C018F52-E8AA-42DB-A184-9D7BC24E5B31}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Data", "Demo.Data\Demo.Data.csproj", "{C6E3596A-B3B9-4452-8667-6740FC748A85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilHelper", "UtilHelper\UtilHelper.csproj", "{62BBF9E0-1B3D-4667-93F9-5A9AF11C3F25}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{8C018F52-E8AA-42DB-A184-9D7BC24E5B31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C018F52-E8AA-42DB-A184-9D7BC24E5B31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C018F52-E8AA-42DB-A184-9D7BC24E5B31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6E3596A-B3B9-4452-8667-6740FC748A85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6E3596A-B3B9-4452-8667-6740FC748A85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6E3596A-B3B9-4452-8667-6740FC748A85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6E3596A-B3B9-4452-8667-6740FC748A85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62BBF9E0-1B3D-4667-93F9-5A9AF11C3F25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62BBF9E0-1B3D-4667-93F9-5A9AF11C3F25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62BBF9E0-1B3D-4667-93F9-5A9AF11C3F25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62BBF9E0-1B3D-4667-93F9-5A9AF11C3F25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
