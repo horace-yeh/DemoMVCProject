@@ -20,12 +20,30 @@ namespace Demo.Repository
 
         public void Create(User instance)
         {
-            throw new NotImplementedException();
+            var sql = @"INSERT INTO [dbo].[User]
+                        ([Name],[Account],[Password],[Creater],[LastEditor])
+                        VALUES
+                        (@Name,@Account,@Password,@Creater,@LastEditor)";
+            var pms = new
+            {
+                Name = dapperTool.ToNVarchar(instance.Name,50),
+                Account = dapperTool.ToVarchar(instance.Account,250),
+                Password = dapperTool.ToVarchar(instance.Password,250),
+                Creater = instance.Creater,
+                LastEditor = instance.LastEditor
+            };
+            var data = dapperTool.DapperNonQuery(sql, pms);
         }
 
         public void Delete(User instance)
         {
-            throw new NotImplementedException();
+            var sql = @"DELETE FROM [dbo].[User]
+                         WHERE [ID] = @ID";
+            var pms = new
+            {
+                ID = instance.ID
+            };
+            var data = dapperTool.DapperNonQuery(sql, pms);
         }
 
         public void Dispose()
@@ -35,7 +53,22 @@ namespace Demo.Repository
 
         public User Get(int primaryID)
         {
-            throw new NotImplementedException();
+            var sql = @"SELECT [ID]
+                                ,[Name]
+                                ,[Account]
+                                ,[Password]
+                                ,[Creater]
+                                ,[CreatDate]
+                                ,[LastEditor]
+                                ,[LastUpdate]
+                            FROM [dbo].[User]
+                            WHERE [ID] = @ID";
+            var pms = new
+            {
+                ID = primaryID
+            };
+            var data = dapperTool.DapperQuery<User>(sql, pms).FirstOrDefault();
+            return data;
         }
 
         public IList<User> GetAll()
@@ -55,7 +88,22 @@ namespace Demo.Repository
 
         public void Update(User instance)
         {
-            throw new NotImplementedException();
+            var sql = @"UPDATE [dbo].[User]
+                          SET [Name] = @Name
+                             ,[Account] = @Account
+                             ,[Password] = @Password
+                             ,[LastEditor] = @LastEditor
+                             ,[LastUpdate] = GETDATE()
+                        WHERE [ID] = @ID";
+            var pms = new 
+            {
+                ID = instance.ID,
+                Name = dapperTool.ToNVarchar(instance.Name, 50),
+                Account = dapperTool.ToVarchar(instance.Account, 250),
+                Password = dapperTool.ToVarchar(instance.Password, 250),
+                LastEditor = instance.LastEditor
+            };
+            var data = dapperTool.DapperNonQuery(sql, pms);
         }
     }
 }
