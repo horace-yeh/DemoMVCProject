@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Repository.Interface
 {
-    interface IMaterialRepository : IRepository<Material>
+    public interface IMaterialRepository : IRepository<Material>
     {
     }
 }
