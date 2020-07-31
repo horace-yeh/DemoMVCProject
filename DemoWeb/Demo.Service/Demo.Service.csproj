@@ -45,6 +45,7 @@
     <Compile Include="Interface\IMaterialService.cs" />
     <Compile Include="Interface\IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Demo.Data\Demo.Data.csproj">
