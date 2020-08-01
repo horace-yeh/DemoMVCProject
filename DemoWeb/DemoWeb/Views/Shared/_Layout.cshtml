@@ -17,6 +17,9 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
+
+                @if (User.Identity.IsAuthenticated) { 
+
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
                         @Html.ActionLink("首頁", "Index", "Home", new { area = "" }, new { @class = "nav-link" })
@@ -38,7 +41,7 @@
                         </a>
                     </li>
                 </ul>
-
+                }
             </div>
         </nav>
     </header>
