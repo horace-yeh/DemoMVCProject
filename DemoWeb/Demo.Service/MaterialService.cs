@@ -14,12 +14,13 @@ namespace Demo.Service
     {
 
         private IMaterialRepository materialRepository;
-        private InventoryRepository inventoryRepository;
+        private IInventoryService InventoryService;
+
 
         public MaterialService()
         {
             this.materialRepository = new MaterialRepository();
-            this.inventoryRepository = new InventoryRepository();
+            this.InventoryService = new InventoryService();
         }
 
 
@@ -45,7 +46,7 @@ namespace Demo.Service
                 throw new ArgumentNullException();
             }
 
-            if (MaterialHaveinventory(instance))
+            if (this.InventoryService.HaveInventory(instance.ID))
             {
                 throw new Exception(@"該物料有庫存資訊無法刪除");
             }
@@ -87,17 +88,5 @@ namespace Demo.Service
         {
             return this.materialRepository.GetAll().Any(x => x.Name.Equals(instance.Name));
         }
-
-        /// <summary>
-        /// 判斷是否有庫存資料
-        /// </summary>
-        /// <param name="instance"></param>
-        /// <returns></returns>
-        private bool MaterialHaveinventory(Material instance) 
-        {
-            return this.inventoryRepository.GetAll().Any(x => x.MaterialID.Equals(instance.ID));
-        }
-
-
     }
 }
