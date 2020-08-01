@@ -3,5 +3,221 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+    <div id="app" class="container-fluid">
+        <div class="row">
+            <main role="main" class="col-md-12 ml-sm-auto col-lg-12 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 alert alert-secondary">
+                    <h1 class="h4">物料清單</h1>
+                </div>
+                <div class="">
+                    <div class="row">
+                        <div class="col-md-4  mb-3">
+                            <label>物料名稱</label>
+                            <input type="text" class="form-control" v-model="input.Name">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label>物料編號</label>
+                            <input type="text" class="form-control" v-model="input.No">
+                        </div>
+                    </div>
+                    <div class="row float-right">
+                        <div class="mb-3 col align-self-end">
+                            <button type="button" class="btn btn-sm btn-outline-success" v-on:click="clickAdd()">新增物料</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>物料名稱</th>
+                                <th>物料編號</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in listData">
+                                <td>{{item.ID}}</td>
+                                <td>{{item.Name}}</td>
+                                <td>{{item.No}}</td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-info btn-sm"  v-on:click="clickModify(item)">編輯</button>
+                                    <button type="button" class="btn btn-outline-info btn-sm" v-on:click="clickDelete(item)">刪除</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+        <!--update modal-->
+        <div class="modal fade" id="updataModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header alert alert-secondary">
+                        <h5 class="modal-title">物料編輯</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <label>物料名稱</label>
+                                        <input type="text" class="form-control" v-model="modify.Name" >
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <label>物料編號</label>
+                                        <input type="text" class="form-control" v-model="modify.No">
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-primary btn-sm" data-dismiss="modal">關閉</button>
+                        <button type="button" class="btn btn-outline-danger btn-sm" v-on:click="update()">儲存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+</div>
+@section scripts{
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                listData: null,
+                input:
+                {
+                    Name: null,
+                    No: null
+                },
+                modify:
+                {
+                    ID:null,
+                    Name: null,
+                    No: null
+                }
+            },
+            mounted: function mounted() {
+                this.loadData();
+            },
+            methods: {
+                loadData: function () {
+                    var callback = function (response) {
+                        if (response.Success) {
+                            app.listData = response.Data.ListData;
+                        } else {
+                            alert(response.Message)
+                        }
+                    }
+                    var url = '@Url.Action("JsonGetListData", "Material")';
+                    jQueryGet(url, callback);
+                },
+                clickAdd: function () {
+                    if (isEmpty(this.input.Name)) {
+                        alert('物料名稱為必填欄位');
+                        return;
+                    }
+                    if (isEmpty(this.input.No)) {
+                        alert('物料編號為必填欄位');
+                        return;
+                    }
+                    this.save();
+                },
+                clickModify: function (item) {
+                    this.modify = item;
+                    bsModalToggle('updataModal');
+                },
+                clickDelete: function (item) {
+                    this.delete(item);
+                },
+                save: function() {
+                    var data = this.input;
+                    var url = '@Url.Action("JsonCreate", "Material")';
+                    var callback = function (response) {
+                        if (response.Success) {
+                            app.loadData();
+                            app.input.Name = null;
+                            app.input.No = null;
+                        } else {
+                            alert(response.Message);
+                        }
+                    }
+                    jQueryPost(url, data, callback);
+                },
+                update: function ()
+                {
+                    var data = this.modify;
+                    var url = '@Url.Action("JsonUpdate", "Material")';
+                    var callback = function (response) {
+                        if (response.Success) {
+                            app.loadData();
+                            bsModalToggle('updataModal');
+                        } else {
+                            alert(response.Message);
+                        }
+                    }
+                    jQueryPost(url, data, callback);
+                },
+                delete: function (item) {
+                    var data = item;
+                    var url = '@Url.Action("JsonDelete", "Material")';
+                    var callback = function (response) {
+                        if (response.Success) {
+                            app.loadData();
+                        } else {
+                            alert(response.Message);
+                        }
+                    }
+                    jQueryPost(url, data, callback);
+                }
+            },
+        });
+
+
+        function jQueryPost(url, data, callback) {
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    callback(response);
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        }
+
+        function jQueryGet(url, callback) {
+            $.ajax({
+                type: "GET",
+                url: url,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    callback(response);
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        }
+
+        function isEmpty(val) {
+            return (val === undefined || val == null || val.trim().length == 0) ? true : false;
+        }
+
+        function bsModalToggle(modalId) {
+            $('#' + modalId).modal('toggle');
+        }
+    </script>
+}
