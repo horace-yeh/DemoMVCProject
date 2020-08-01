@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace DemoWeb.Controllers
 {
+    [Authorize]
     public class MaterialController : Controller
     {
         // GET: Material

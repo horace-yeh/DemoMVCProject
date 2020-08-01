@@ -21,13 +21,7 @@ namespace Demo.Service
 
         public bool CheckPassword(User instance)
         {
-            var user = this.userRepository.GetAll()
-                .Where( x => x.Account.Equals(instance.Account) 
-                        && x.Password.Equals(instance.Password)
-                      );
-            if (user != null)
-                return true;
-            return false;
+            return this.userRepository.GetAll().Any( x => x.Account.Equals(instance.Account) && x.Password.Equals(instance.Password));
         }
     }
 }
