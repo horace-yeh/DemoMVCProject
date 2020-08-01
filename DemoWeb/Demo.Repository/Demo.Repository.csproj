@@ -47,7 +47,7 @@
     <Compile Include="Interface\IInventoryRepository.cs" />
     <Compile Include="Interface\IMaterialRepository.cs" />
     <Compile Include="Interface\IRepository.cs" />
-    <Compile Include="Interface\IUserRepository.cs.cs" />
+    <Compile Include="Interface\IUserRepository.cs" />
     <Compile Include="InventoryRepository.cs" />
     <Compile Include="MaterialRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

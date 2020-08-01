@@ -1,5 +1,6 @@
 ﻿using Demo.Data.Models;
 using Demo.Repository;
+using Demo.Repository.Interface;
 using Demo.Service.Interface;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace Demo.Service
 {
     public class UserService : IUserService
     {
-        private UserRepository userRepository;
+        private IUserRepository userRepository;
 
         public UserService()
         {
