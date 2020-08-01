@@ -15,5 +15,12 @@ namespace Demo.Service.Interface
         /// <param name="instance"></param>
         /// <returns></returns>
         bool CheckPassword(User instance);
+
+        /// <summary>
+        /// 依帳號取得使用者ID
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
+        int GetIDByAccount(string account);
     }
 }

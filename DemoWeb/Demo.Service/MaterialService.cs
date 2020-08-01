@@ -16,7 +16,6 @@ namespace Demo.Service
         private IMaterialRepository materialRepository;
         private IInventoryService InventoryService;
 
-
         public MaterialService()
         {
             this.materialRepository = new MaterialRepository();
@@ -86,7 +85,7 @@ namespace Demo.Service
         /// <returns></returns>
         private bool HaveSomeNo(Material instance)
         {
-            return this.materialRepository.GetAll().Any(x => x.Name.Equals(instance.Name));
+            return this.materialRepository.GetAll().Any(x => x.No.Equals(instance.No) && x.ID != instance.ID);
         }
     }
 }
