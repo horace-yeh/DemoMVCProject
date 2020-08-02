@@ -1,4 +1,5 @@
 ﻿using Demo.Data.Models;
+using Demo.Data.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,12 @@ namespace Demo.Service.Interface
         /// </summary>
         /// <param name="instance"></param>
         void StockOut(Inventory instance);
+
+        /// <summary>
+        /// 取得所有庫存資料(包含物料名稱、人員資訊)
+        /// </summary>
+        /// <returns></returns>
+        IList<InventoryInfo> GetAllHaveInfo();
 
         /// <summary>
         /// 取得所有庫存資料

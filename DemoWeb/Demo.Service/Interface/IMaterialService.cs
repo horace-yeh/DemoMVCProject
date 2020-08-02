@@ -29,11 +29,17 @@ namespace Demo.Service.Interface
         void Delete(Material instance);
 
         /// <summary>
+        /// 取得所有物料資訊(包含人員名稱)
+        /// </summary>
+        /// <returns></returns>
+        IList<MaterialInfo> GetAllHaveInfo();
+
+        /// <summary>
         /// 取得所有物料資訊
         /// </summary>
         /// <returns></returns>
-        IList<MaterialInfo> GetAll();
-        
+        IList<Material> GetAll();
+
         /// <summary>
         /// 依照ID取得物料
         /// </summary>

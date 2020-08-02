@@ -38,7 +38,7 @@ namespace DemoWeb.Controllers
         {
             try
             {
-                var temp = this.materialService.GetAll().ToList();
+                var temp = this.materialService.GetAllHaveInfo().ToList();
                 var model = new MaterialViewModel() { ListData = temp };
                 return Json(new ReData { Success = true, Data = model }, JsonRequestBehavior.AllowGet);
             }
