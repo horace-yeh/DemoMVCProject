@@ -3,5 +3,223 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+    <div id="app" class="container-fluid">
+        <div class="row">
+            <main role="main" class="col-md-12 ml-sm-auto col-lg-12 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 alert alert-secondary">
+                    <h1 class="h4">庫存清單</h1>
+                </div>
+                <div class="">
+                    <div class="row">
+                        <div class="col-md-4  mb-3">
+                            <label>物料</label>
+                            <select class="form-control" v-model="stockIn.MaterialID">
+                                <option v-for="item in materialList" :value="item.ID">{{item.No}}-{{item.Name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label>數量</label>
+                            <input type="number" class="form-control" v-model="stockIn.Quantity">
+                        </div>
+                    </div>
+                    <div class="row float-right">
+                        <div class="mb-3 col align-self-end">
+                            <button type="button" class="btn btn-sm btn-outline-success" v-on:click="clickStockIn()">物料入庫</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>物料名稱</th>
+                                <th>物料編號</th>
+                                <th>庫存數量</th>
+                                <th>建立時間</th>
+                                <th>建立者</th>
+                                <th>最後修改時間</th>
+                                <th>修改者</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in listData">
+                                <td>{{item.ID}}</td>
+                                <td>{{item.MaterialName}}</td>
+                                <td>{{item.MaterialNo}}</td>
+                                <td>{{item.Quantity}}</td>
+                                <td>{{dateFormat(item.CreatDate)}}</td>
+                                <td>{{item.CreaterName}}</td>
+                                <td>{{dateFormat(item.LastUpdate)}}</td>
+                                <td>{{item.LastEditorName}}</td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-info btn-sm" v-on:click="clickStockOut(item)">物料出庫</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+        <!--stockOut modal-->
+        <div class="modal fade" id="stockOutModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header alert alert-secondary">
+                        <h5 class="modal-title">物料出庫</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label>物料名稱</label>
+                                    <input type="text" class="form-control" v-model="stockOut.MaterialName" readonly>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label>物料編號</label>
+                                    <input type="text" class="form-control" v-model="stockOut.MaterialNo" readonly>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label>當前庫存</label>
+                                    <input type="text" class="form-control" v-model="stockOut.Quantity" readonly>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label>數量</label>
+                                    <input type="number" class="form-control" v-model="stockOut.Qty">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-primary btn-sm" data-dismiss="modal">關閉</button>
+                        <button type="button" class="btn btn-outline-danger btn-sm" v-on:click="clickModalStockOut()">出庫</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+@section scripts{
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                listData: null,
+                materialList: null,
+                stockIn:
+                {
+                    MaterialID: null,
+                    Quantity: null
+                },
+                stockOut:
+                {
+                    MaterialName: null,
+                    MaterialNo: null,
+                    MaterialID:null,
+                    Quantity: null,
+                    Qty: null,
+                }
+            },
+            mounted: function mounted() {
+                this.loadData();
+                this.loadMaterialSelect();
+            },
+            methods: {
+                loadData: function () {
+                    var callback = function (response) {
+                        if (response.Success) {
+                            app.listData = response.Data.ListData;
+                        } else {
+                            alert(response.Message)
+                        }
+                    }
+                    var url = '@Url.Action("JsonGetListData", "Inventory")';
+                    jQueryGet(url, callback);
+                },
+                loadMaterialSelect: function () {
+                    var callback = function (response) {
+                        if (response.Success) {
+                            app.materialList = response.Data;
+                            app.stockIn.MaterialID = app.materialList[0].ID;
+                        } else {
+                            alert(response.Message)
+                        }
+                    }
+                    var url = '@Url.Action("JsonGetMaterialSelect", "Inventory")';
+                    jQueryGet(url, callback);
+                },
+                dateFormat: function (value) {
+                    return momentDateFormat(value);
+                },
+                clickStockIn: function () {
+                    if (isEmpty(this.stockIn.Quantity) || this.stockIn.Quantity <= 0 ) {
+                        alert('請輸入正確數量');
+                        return;
+                    }
+                    this.stockInSave();
+                },
+                clickStockOut: function (item) {
+                    this.stockOut = item;
+                    this.stockOut.Qty = null;
+                    bsModalToggle('stockOutModal');
+                },
+                clickModalStockOut: function () {
+                    if (isEmpty(this.stockOut.Qty) || this.stockOut.Qty <= 0) {
+                        alert('請輸入正確數量');
+                        return;
+                    }
+                    if (this.stockOut.Qty > this.stockOut.Quantity)
+                    {
+                        alert('出庫數量大於庫存數量');
+                        return;
+                    }
+                    this.stockOutSave();
+                },
+                stockInSave: function () {
+                    var data = this.stockIn;
+                    var url = '@Url.Action("StockIn", "Inventory")';
+                    var callback = function (response) {
+                        if (response.Success) {
+                            app.loadData();
+                            app.stockIn.MaterialID = app.materialList[0].ID;
+                            app.stockIn.Quantity = null;
+                        } else {
+                            alert(response.Message);
+                        }
+                    }
+                    jQueryPost(url, data, callback);
+                },
+                stockOutSave: function () {
+                    var data = this.stockOut;
+                    data.Quantity = data.Qty;
+                    var url = '@Url.Action("StockOut", "Inventory")';
+                    var callback = function (response) {
+                        if (response.Success) {
+                            app.loadData();
+                            bsModalToggle('stockOutModal');
+                            app.stockOut.MaterialName = null;
+                            app.stockOut.MaterialNo = null;
+                            app.stockOut.MaterialID = null;
+                            app.stockOut.Quantity = null;
+                            app.stockOut.Qty = null;
+                        } else {
+                            alert(response.Message);
+                        }
+                    }
+                    jQueryPost(url, data, callback);
+                }
+            },
+        });
+    </script>
+}
 

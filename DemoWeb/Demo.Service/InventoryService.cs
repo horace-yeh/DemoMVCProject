@@ -1,4 +1,5 @@
 ﻿using Demo.Data.Models;
+using Demo.Data.ViewModels;
 using Demo.Repository;
 using Demo.Repository.Interface;
 using Demo.Service.Interface;
@@ -13,15 +14,45 @@ namespace Demo.Service
     public class InventoryService : IInventoryService
     {
         private IInventoryRepository inventoryRepository;
+        private IUserService userService;
+        private IMaterialRepository materialRepository;
 
         public InventoryService()
         {
             this.inventoryRepository = new InventoryRepository();
+            this.userService = new UserService();
+            this.materialRepository = new MaterialRepository();
         }
 
         public IList<Inventory> GetAll()
         {
             return this.inventoryRepository.GetAll();
+        }
+
+        public IList<InventoryInfo> GetAllHaveInfo()
+        {
+            var inventoryList = this.GetAll();
+            var userList = this.userService.GetAll();
+            var materialList = this.materialRepository.GetAll();
+            var data = from t1 in inventoryList
+                       join t2 in userList on t1.Creater equals t2.ID
+                       join t3 in userList on t1.LastEditor equals t3.ID
+                       join t4 in materialList on t1.MaterialID equals t4.ID
+                       select new InventoryInfo
+                       {
+                           ID = t1.ID,
+                           MaterialID = t1.MaterialID,
+                           Quantity = t1.Quantity,
+                           MaterialName = t4.Name,
+                           MaterialNo = t4.No,
+                           Creater = t1.Creater,
+                           CreatDate = t1.CreatDate,
+                           LastEditor = t1.LastEditor,
+                           LastUpdate = t1.LastUpdate,
+                           CreaterName = t2.Name,
+                           LastEditorName = t3.Name
+                       };
+            return data.ToList();
         }
 
         public bool HaveInventory(int MaterialID)

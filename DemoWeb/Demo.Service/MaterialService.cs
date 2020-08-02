@@ -61,10 +61,15 @@ namespace Demo.Service
             return this.materialRepository.Get(primaryID);
         }
 
-        public IList<MaterialInfo> GetAll()
+        public IList<Material> GetAll()
         {
-            var materialList = this.materialRepository.GetAll().ToList();
-            var userList = this.userService.GetAll().ToList();
+            return this.materialRepository.GetAll();
+        }
+
+        public IList<MaterialInfo> GetAllHaveInfo()
+        {
+            var materialList = this.GetAll();
+            var userList = this.userService.GetAll();
             var data = from t1 in materialList
                         join t2 in userList on t1.Creater equals t2.ID
                         join t3 in userList on t1.LastEditor equals t3.ID
