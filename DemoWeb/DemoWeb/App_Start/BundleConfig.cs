@@ -28,6 +28,12 @@ namespace DemoWeb
                         "~/Scripts/vue.js"
                         ));
 
+            //tsTool import
+            bundles.Add(new ScriptBundle("~/bundles/tsTool").Include(
+                        "~/Scripts/moment.min.js",
+                        "~/Scripts/tsUtils/tool.js"
+            ));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/fontawesome-all.min.css",

@@ -33,6 +33,10 @@
                                 <th>#</th>
                                 <th>物料名稱</th>
                                 <th>物料編號</th>
+                                <th>建立時間</th>
+                                <th>建立者</th>
+                                <th>最後修改時間</th>
+                                <th>修改者</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
@@ -41,8 +45,12 @@
                                 <td>{{item.ID}}</td>
                                 <td>{{item.Name}}</td>
                                 <td>{{item.No}}</td>
+                                <td>{{dateFormat(item.CreatDate)}}</td>
+                                <td>{{item.CreaterName}}</td>
+                                <td>{{dateFormat(item.LastUpdate)}}</td>
+                                <td>{{item.LastEditorName}}</td>
                                 <td>
-                                    <button type="button" class="btn btn-outline-info btn-sm"  v-on:click="clickModify(item)">編輯</button>
+                                    <button type="button" class="btn btn-outline-info btn-sm" v-on:click="clickModify(item)">編輯</button>
                                     <button type="button" class="btn btn-outline-info btn-sm" v-on:click="clickDelete(item)">刪除</button>
                                 </td>
                             </tr>
@@ -119,6 +127,9 @@
                     var url = '@Url.Action("JsonGetListData", "Material")';
                     jQueryGet(url, callback);
                 },
+                dateFormat: function (value) {
+                    return momentDateFormat(value);
+                },
                 clickAdd: function () {
                     if (isEmpty(this.input.Name)) {
                         alert('物料名稱為必填欄位');
@@ -181,43 +192,43 @@
         });
 
 
-        function jQueryPost(url, data, callback) {
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: JSON.stringify(data),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    callback(response);
-                },
-                error: function (error) {
-                    console.error(error);
-                }
-            });
-        }
+        //function jQueryPost(url, data, callback) {
+        //    $.ajax({
+        //        type: "POST",
+        //        url: url,
+        //        data: JSON.stringify(data),
+        //        contentType: "application/json; charset=utf-8",
+        //        dataType: "json",
+        //        success: function (response) {
+        //            callback(response);
+        //        },
+        //        error: function (error) {
+        //            console.error(error);
+        //        }
+        //    });
+        //}
 
-        function jQueryGet(url, callback) {
-            $.ajax({
-                type: "GET",
-                url: url,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    callback(response);
-                },
-                error: function (error) {
-                    console.error(error);
-                }
-            });
-        }
+        //function jQueryGet(url, callback) {
+        //    $.ajax({
+        //        type: "GET",
+        //        url: url,
+        //        contentType: "application/json; charset=utf-8",
+        //        dataType: "json",
+        //        success: function (response) {
+        //            callback(response);
+        //        },
+        //        error: function (error) {
+        //            console.error(error);
+        //        }
+        //    });
+        //}
 
-        function isEmpty(val) {
-            return (val === undefined || val == null || val.trim().length == 0) ? true : false;
-        }
+        //function isEmpty(val) {
+        //    return (val === undefined || val == null || val.trim().length == 0) ? true : false;
+        //}
 
-        function bsModalToggle(modalId) {
-            $('#' + modalId).modal('toggle');
-        }
+        //function bsModalToggle(modalId) {
+        //    $('#' + modalId).modal('toggle');
+        //}
     </script>
 }

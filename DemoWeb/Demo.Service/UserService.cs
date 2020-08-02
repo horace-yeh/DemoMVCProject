@@ -24,6 +24,11 @@ namespace Demo.Service
             return this.userRepository.GetAll().Any( x => x.Account.Equals(instance.Account) && x.Password.Equals(instance.Password));
         }
 
+        public IList<User> GetAll()
+        {
+            return this.userRepository.GetAll();
+        }
+
         public int GetIDByAccount(string account)
         {
             var temp = this.userRepository.GetAll().Where(x => x.Account.Equals(account)).FirstOrDefault();

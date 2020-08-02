@@ -22,5 +22,7 @@ namespace Demo.Service.Interface
         /// <param name="account"></param>
         /// <returns></returns>
         int GetIDByAccount(string account);
+
+        IList<User> GetAll();
     }
 }
