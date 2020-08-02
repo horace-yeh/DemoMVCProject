@@ -9,5 +9,11 @@ namespace Demo.Repository.Interface
 {
     public interface IInventoryRepository : IRepository<Inventory>
     {
+        /// <summary>
+        /// 判斷是否有庫存資料
+        /// </summary>
+        /// <param name="MaterialID"></param>
+        /// <returns></returns>
+        bool HaveInventory(int MaterialID);
     }
 }

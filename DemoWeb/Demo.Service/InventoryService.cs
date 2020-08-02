@@ -14,14 +14,14 @@ namespace Demo.Service
     public class InventoryService : IInventoryService
     {
         private IInventoryRepository inventoryRepository;
-        private IUserService userService;
         private IMaterialRepository materialRepository;
+        private IUserRepository userRepository;
 
         public InventoryService()
         {
             this.inventoryRepository = new InventoryRepository();
-            this.userService = new UserService();
             this.materialRepository = new MaterialRepository();
+            this.userRepository = new UserRepository();
         }
 
         public IList<Inventory> GetAll()
@@ -32,7 +32,7 @@ namespace Demo.Service
         public IList<InventoryInfo> GetAllHaveInfo()
         {
             var inventoryList = this.GetAll();
-            var userList = this.userService.GetAll();
+            var userList = this.userRepository.GetAll();
             var materialList = this.materialRepository.GetAll();
             var data = from t1 in inventoryList
                        join t2 in userList on t1.Creater equals t2.ID
@@ -55,14 +55,9 @@ namespace Demo.Service
             return data.ToList();
         }
 
-        public bool HaveInventory(int MaterialID)
-        {
-            return this.inventoryRepository.GetAll().Any(x => x.MaterialID.Equals(MaterialID));
-        }
-
         public void StockIn(Inventory instance)
         {
-            if (HaveInventory(instance.MaterialID))
+            if (this.inventoryRepository.HaveInventory(instance.MaterialID))
             {
                 var original = this.inventoryRepository.GetAll().Where(x => x.MaterialID.Equals(instance.MaterialID)).FirstOrDefault();
                 original.Quantity += instance.Quantity;

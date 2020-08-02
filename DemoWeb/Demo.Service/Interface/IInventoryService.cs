@@ -34,11 +34,5 @@ namespace Demo.Service.Interface
         /// <returns></returns>
         IList<Inventory> GetAll();
 
-        /// <summary>
-        /// 判斷是否有庫存資料
-        /// </summary>
-        /// <param name="MaterialID"></param>
-        /// <returns></returns>
-        bool HaveInventory(int MaterialID);
     }
 }
