@@ -15,14 +15,15 @@ namespace Demo.Service
     {
 
         private IMaterialRepository materialRepository;
-        private IInventoryService InventoryService;
-        private IUserService userService;
+        private IUserRepository userRepository;
+        private IInventoryRepository inventoryRepository;
+
 
         public MaterialService()
         {
             this.materialRepository = new MaterialRepository();
-            this.InventoryService = new InventoryService();
-            this.userService = new UserService();
+            this.userRepository = new UserRepository();
+            this.inventoryRepository = new InventoryRepository();
         }
 
 
@@ -48,7 +49,7 @@ namespace Demo.Service
                 throw new ArgumentNullException();
             }
 
-            if (this.InventoryService.HaveInventory(instance.ID))
+            if (this.inventoryRepository.HaveInventory(instance.ID))
             {
                 throw new Exception(@"該物料有庫存資訊無法刪除");
             }
@@ -69,7 +70,7 @@ namespace Demo.Service
         public IList<MaterialInfo> GetAllHaveInfo()
         {
             var materialList = this.GetAll();
-            var userList = this.userService.GetAll();
+            var userList = this.userRepository.GetAll();
             var data = from t1 in materialList
                         join t2 in userList on t1.Creater equals t2.ID
                         join t3 in userList on t1.LastEditor equals t3.ID

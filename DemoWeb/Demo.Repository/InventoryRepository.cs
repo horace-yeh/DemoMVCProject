@@ -86,6 +86,11 @@ namespace Demo.Repository
             return data;
         }
 
+        public bool HaveInventory(int MaterialID)
+        {
+            return this.GetAll().Any(x => x.MaterialID.Equals(MaterialID));
+        }
+
         public void Update(Inventory instance)
         {
             var sql = @"UPDATE [dbo].[Inventory]
