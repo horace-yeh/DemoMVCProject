@@ -9,6 +9,12 @@ namespace Demo.Data.ViewModels
 {
     public class MaterialViewModel
     {
-        public List<Material> ListData { get; set; }
+        public List<MaterialInfo> ListData { get; set; }
+    }
+
+    public class MaterialInfo : Material
+    {
+        public string CreaterName { get; set; }
+        public string LastEditorName { get; set; }
     }
 }

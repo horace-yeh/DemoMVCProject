@@ -1,4 +1,5 @@
 ﻿using Demo.Data.Models;
+using Demo.Data.ViewModels;
 using Demo.Repository;
 using Demo.Repository.Interface;
 using Demo.Service.Interface;
@@ -15,11 +16,13 @@ namespace Demo.Service
 
         private IMaterialRepository materialRepository;
         private IInventoryService InventoryService;
+        private IUserService userService;
 
         public MaterialService()
         {
             this.materialRepository = new MaterialRepository();
             this.InventoryService = new InventoryService();
+            this.userService = new UserService();
         }
 
 
@@ -58,9 +61,26 @@ namespace Demo.Service
             return this.materialRepository.Get(primaryID);
         }
 
-        public IList<Material> GetAll()
+        public IList<MaterialInfo> GetAll()
         {
-            return this.materialRepository.GetAll();
+            var materialList = this.materialRepository.GetAll().ToList();
+            var userList = this.userService.GetAll().ToList();
+            var data = from t1 in materialList
+                        join t2 in userList on t1.Creater equals t2.ID
+                        join t3 in userList on t1.LastEditor equals t3.ID
+                        select new MaterialInfo
+                        {
+                            ID = t1.ID,
+                            Name = t1.Name,
+                            No = t1.No,
+                            Creater = t1.Creater,
+                            CreatDate = t1.CreatDate,
+                            LastEditor = t1.LastEditor,
+                            LastUpdate = t1.LastUpdate,
+                            CreaterName = t2.Name,
+                            LastEditorName = t3.Name
+                        };
+            return data.ToList();
         }
 
         public void Update(Material instance)

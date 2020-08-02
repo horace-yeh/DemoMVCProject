@@ -1,4 +1,5 @@
 ﻿using Demo.Data.Models;
+using Demo.Data.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace Demo.Service.Interface
         /// 取得所有物料資訊
         /// </summary>
         /// <returns></returns>
-        IList<Material> GetAll();
+        IList<MaterialInfo> GetAll();
         
         /// <summary>
         /// 依照ID取得物料
